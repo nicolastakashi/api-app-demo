@@ -10,12 +10,12 @@ namespace apiapp.demo.Controllers
     {
         [HttpGet]
         [ProducesResponseType(typeof(Todo), 200)]
-        public static IEnumerable<Todo> Get() => Todo.todos;
+        public IEnumerable<Todo> Get() => Todo.todos;
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(Todo), 200)]
         [ProducesResponseType(typeof(Todo), 204)]
-        public static Todo Get([FromRoute, Required] int id) => Todo.todos.Find(x => x.Id == id);
+        public Todo Get([FromRoute, Required] int id) => Todo.todos.Find(x => x.Id == id);
 
         [HttpPost]
         [ProducesResponseType(typeof(Todo), 201)]
@@ -28,7 +28,7 @@ namespace apiapp.demo.Controllers
             }
 
             todo = todo.Create(todo);
-            return CreatedAtRoute(nameof(Get), new { id = todo.Id }, todo);
+            return CreatedAtAction(nameof(Get), new { id = todo.Id }, todo);
         }
 
         [HttpPut("{id:int}")]
@@ -42,8 +42,9 @@ namespace apiapp.demo.Controllers
             {
                 return BadRequest();
             }
-
-            return Ok();
+            actualTodo.IsComplete = todo.IsComplete;
+            actualTodo.Name = todo.Name;
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -59,7 +60,7 @@ namespace apiapp.demo.Controllers
             }
 
             Todo.todos.Remove(todo);
-            return Ok();
+            return NoContent();
         }
     }
 }
