@@ -23,11 +23,6 @@ namespace apiapp.demo.Models
             {
                 Id = 3,
                 Name = "Fazer a compa do mês"
-            },
-            new Todo
-            {
-                Id = 4,
-                Name = "Marcar consulta com o médico"
             }
         };
 
