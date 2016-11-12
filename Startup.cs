@@ -15,7 +15,8 @@ namespace apiapp.demo
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+                .AddApplicationInsightsSettings(developerMode: env.IsDevelopment());
             Configuration = builder.Build();
         }
 
@@ -26,6 +27,7 @@ namespace apiapp.demo
         {
             // Add framework services.
             services.AddMvc();
+            services.AddApplicationInsightsTelemetry(Configuration);
             services.AddSwaggerGen(option =>
             {
                 option.SingleApiVersion(new Info
@@ -40,6 +42,8 @@ namespace apiapp.demo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseApplicationInsightsRequestTelemetry();
+            app.UseApplicationInsightsExceptionTelemetry();
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
