@@ -28,6 +28,11 @@ namespace apiapp.demo.Models
             {
                 Id = 4,
                 Name = "Gravar mais vídeos sobre Azure Api Apps"
+            },
+            new Todo
+            {
+                Id = 5,
+                Name = "Demo Azure Api Apps"
             }
         };
 
